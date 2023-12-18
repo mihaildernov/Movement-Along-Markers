@@ -37,7 +37,7 @@ def fast_move_forward(duration):
     vehicle.channels.overrides['1'] = 1500
 
 def move_left(duration):
-    vehicle.channels.overrides['1'] = 1700
+    vehicle.channels.overrides['1'] = 1800
     vehicle.channels.overrides['3'] = 1200
 
 cap = cv2.VideoCapture(0)
