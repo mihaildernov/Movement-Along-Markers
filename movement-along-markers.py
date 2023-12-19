@@ -87,7 +87,7 @@ while True:
         elif len(apd) == 4 and area > 1500:
             cv2.drawContours(image, [apd], -1, (0, 255, 0), 4)
             print("Обнаружен синий квадрат")
-            print("движение вперед")
+            print("Движение вперед")
             move_forward(1)
 
         elif len(apd) == 3 and area > 1500:
@@ -97,8 +97,8 @@ while True:
             move_left(1)
             
         else:
-            print("STOP")
-            stop(0.25)
+            print("Остановка")
+            stop(1)
 
     cv2.imshow("Image", image)
 
