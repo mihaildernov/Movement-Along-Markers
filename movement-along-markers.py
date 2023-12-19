@@ -81,7 +81,7 @@ while True:
         elif len(apd) == 5 and area > 1500:
             cv2.drawContours(image, [apd], -1, (0, 255, 0), 5)
             print("Обнаружен синий пятиугольник")
-            print("fast")
+            print("Ускоренное движение вперед")
             fast_move_forward(2)
 
         elif len(apd) == 4 and area > 1500:
