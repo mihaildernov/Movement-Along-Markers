@@ -67,50 +67,38 @@ while True:
 
     for cont in contours:
         area = cv2.contourArea(cont)
+        sm = cv2.arcLength(cont, True)
+        apd = cv2.approxPolyDP(cont, 0.02 * sm, True)
 
-        if area > 10000:
-            sm = cv2.arcLength(cont, True)
-            apd = cv2.approxPolyDP(cont, 0.02 * sm, True)
+        if len(apd) == 8 and area > 3000:
+            cv2.drawContours(image, [apd], -1, (0, 255, 0), 6)
+            print("Обнаружен синий восьмиугольник")
+            print("Поворот влево")
+            move_left(1)
 
-            if len(apd) == 6:
-                cv2.drawContours(image, [apd], -1, (0, 255, 0), 6)
-                print("Обнаружен синий шестиугольник")
-                print("Поворот влево")
-                move_left(1)
+        elif len(apd) == 5 and area > 3000:
+            cv2.drawContours(image, [apd], -1, (0, 255, 0), 5)
+            print("Обнаружен синий пятиугольник")
+            print("Быстрое движение вперед")
+            fast_move_forward(2)
 
-            elif len(apd) == 5:
-                cv2.drawContours(image, [apd], -1, (0, 255, 0), 5)
-                print("Обнаружен синий пятиугольник")
-                print("Быстрое движение вперед")
-                fast_move_forward(2)
+        elif len(apd) == 4 and area > 3000:
+            cv2.drawContours(image, [apd], -1, (0, 255, 0), 4)
+            print("Обнаружен синий квадрат")
+            print("Остановка")
+            stop(60)
 
-            elif len(apd) == 4:
-                cv2.drawContours(image, [apd], -1, (0, 255, 0), 4)
-                print("Обнаружен синий квадрат")
-                print("Остановка")
-                stop(60)
+        elif len(apd) == 3 and area > 3000:
+            cv2.drawContours(image, [apd], -1, (0, 255, 0), 3)
+            print("Обнаружен синий треугольник")
+            print("Поворот вправо")
+            move_right(1)
 
-            elif len(apd) == 3:
-                cv2.drawContours(image, [apd], -1, (0, 255, 0), 3)
-                print("Обнаружен синий треугольник")
-                print("Поворот вправо")
-                move_right(1)
+        else:
+            print("Движение прямо")
+            move_forward(0.5)
 
-            else:
-                print("Движение прямо")
-                move_forward(0.5)
-
-            centres = []
-            x1 = 320; y1 = 240
-
-            moment = cv2.moments(cont)
-            x2 = int(moment['m10'] / moment['m00']); y2 = int(moment['m01'] / moment['m00'])
-            centres.append((x2, y2))
-            x = x2 - x1; y = y2 - y1
-            print(centres)
-            print()
-
-    cv2.imshow("Blue Square Detection", image)
+    cv2.imshow("Image", image)
 
     if cv2.waitKey(1) & 0xff == 27:
         break
