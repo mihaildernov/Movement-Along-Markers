@@ -18,27 +18,29 @@ while not vehicle.armed:
 
 def stop(duration):
     vehicle.channels.overrides['1'] = 1500
-    vehicle.channels.overrides['3'] = 1200
+    vehicle.channels.overrides['3'] = 1100
 
 def circle(duration):
     vehicle.channels.overrides['1'] = 1300
+    vehicle.channels.overrides['3'] = 1100
+    
+def move_left(duration):
+    vehicle.channels.overrides['1'] = 1300
     vehicle.channels.overrides['3'] = 1200
-
-def move_right(duration):
-    vehicle.channels.overrides['1'] = 1200
-    vehicle.channels.overrides['3'] = 1200
+    time.sleep(0.25)
 
 def move_forward(duration):
-    vehicle.channels.overrides['3'] = 1500
+    vehicle.channels.overrides['3'] = 1400
     vehicle.channels.overrides['1'] = 1500
 
 def fast_move_forward(duration):
-    vehicle.channels.overrides['3'] = 2000
+    vehicle.channels.overrides['3'] = 2200
     vehicle.channels.overrides['1'] = 1500
 
-def move_left(duration):
-    vehicle.channels.overrides['1'] = 1800
+def move_right(duration):
+    vehicle.channels.overrides['1'] = 1700
     vehicle.channels.overrides['3'] = 1200
+    time.sleep(0.25)
 
 cap = cv2.VideoCapture(0)
 
@@ -70,33 +72,33 @@ while True:
         sm = cv2.arcLength(cont, True)
         apd = cv2.approxPolyDP(cont, 0.02 * sm, True)
 
-        if len(apd) == 8 and area > 3000:
-            cv2.drawContours(image, [apd], -1, (0, 255, 0), 6)
+        if len(apd) == 8 and area > 1500:
+            cv2.drawContours(image, [apd], -1, (0, 255, 0), 8)
             print("Обнаружен синий восьмиугольник")
-            print("Поворот влево")
-            move_left(1)
-
-        elif len(apd) == 5 and area > 3000:
-            cv2.drawContours(image, [apd], -1, (0, 255, 0), 5)
-            print("Обнаружен синий пятиугольник")
-            print("Быстрое движение вперед")
-            fast_move_forward(2)
-
-        elif len(apd) == 4 and area > 3000:
-            cv2.drawContours(image, [apd], -1, (0, 255, 0), 4)
-            print("Обнаружен синий квадрат")
-            print("Остановка")
-            stop(60)
-
-        elif len(apd) == 3 and area > 3000:
-            cv2.drawContours(image, [apd], -1, (0, 255, 0), 3)
-            print("Обнаружен синий треугольник")
             print("Поворот вправо")
             move_right(1)
 
+        elif len(apd) == 5 and area > 1500:
+            cv2.drawContours(image, [apd], -1, (0, 255, 0), 5)
+            print("Обнаружен синий пятиугольник")
+            print("fast")
+            fast_move_forward(2)
+
+        elif len(apd) == 4 and area > 1500:
+            cv2.drawContours(image, [apd], -1, (0, 255, 0), 4)
+            print("Обнаружен синий квадрат")
+            print("движение вперед")
+            move_forward(1)
+
+        elif len(apd) == 3 and area > 1500:
+            cv2.drawContours(image, [apd], -1, (0, 255, 0), 3)
+            print("Обнаружен синий треугольник")
+            print("Поворот влево")
+            move_left(1)
+            
         else:
-            print("Движение прямо")
-            move_forward(0.5)
+            print("STOP")
+            stop(0.25)
 
     cv2.imshow("Image", image)
 
